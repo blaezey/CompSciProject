@@ -1,18 +1,68 @@
 
 public class Player {
 	private int health;
+	private int maxHealth;
 	private int defense;
 	private int attack;
 	private int gold;
+	private int loot;
+	private int xp, level, xpN;
+	
+	
 	
 	
 	public Player() {
 		health = 10;
+		maxHealth = 10;
 		defense = 0;
 		attack = 1;
 		gold = 10;
+		loot = 0;
+		xp = 0;
+		xpN = 10;
+		level = 1;
 	}
 	
+	public int getXpN() {
+		return xpN;
+	}
+
+	public void setXpN(int xpN) {
+		this.xpN = xpN;
+	}
+
+	public int getMaxHealth() {
+		return maxHealth;
+	}
+
+	public void setMaxHealth(int maxHealth) {
+		this.maxHealth = maxHealth;
+	}
+
+	public int getLoot() {
+		return loot;
+	}
+
+	public void setLoot(int loot) {
+		this.loot = loot;
+	}
+
+	public int getXp() {
+		return xp;
+	}
+
+	public void setXp(int xp) {
+		this.xp = xp;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
 	public Player(int attack, int defense, int health) {
 		this.attack = attack;
 		this.defense = defense;

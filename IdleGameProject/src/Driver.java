@@ -15,16 +15,31 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class Driver extends JPanel implements ActionListener, MouseListener, MouseMotionListener, KeyListener{
-	String op1 = "option 1";
-	String op2 = "option 2";
-	String op3 = "option 3";
-	String op4 = "option 4";
-	String narr = "Hello ";
+	String op1 = "Open map";
+	String op2 = "...";
+	String op3 = "...";
+	String op4 = "...";
+	String narr = "You find yourself in the town plaza...";
 	Player p = new Player();
-	Boolean a1 = false;
+	Boolean main = true;
+	Boolean storeM = false;
+	Boolean storeB = false;
+	Boolean storeS = false;
+	Boolean map = false;
+	Boolean dead = false;
+	Boolean hosp = false;
+	Boolean dung = false;
+	Boolean opt1 = false;
+	Boolean opt2 = false;
+	Boolean opt3 = false;
+	Boolean opt4 = false;
+	
+	
+	
 	
 	
 	public void paint(Graphics g) {
+		super.repaint();
 		g.fillRect(0, 0, 800, 600);
 		Font font = new Font("Serif", Font.PLAIN, 16);
 		g.setFont(font);
@@ -38,28 +53,104 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		g.drawString("[4] "+op4, 20, 380);
 		g.drawLine(400, 5, 400, 290);
 		g.drawLine(400, 305, 400, 560);
-		g.drawString("Health: "+p.getHealth(), 450, 285);
-		g.drawString("Defense: "+p.getDefense(), 550, 285);
-		g.drawString("Attack: "+p.getAttack(), 650, 285);
+		g.drawString("Health: "+p.getHealth()+"/"+p.getMaxHealth(), 450, 325);
+		g.drawString("Defense: "+p.getDefense(), 560, 325);
+		g.drawString("Attack: "+p.getAttack(), 660, 325);
+		g.drawString("Gold: "+p.getGold(), 520, 345);
+		g.drawString("Loot: "+p.getLoot(), 620, 345);
+		g.drawString("Level "+p.getLevel()+": "+p.getXp()+"/"+p.getXpN(), 550, 560);
 		
 		//Narration
-		if(a1) {
-			for(int i = 1; i < narr.length(); i++) {
-				g.drawString(narr.substring(0, i), 420, 50);
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					Thread.currentThread().interrupt();
-				}
-			}
-			a1 = false;
+		g.drawString(narr, 20, 450);
+		
+		//Navigation logic
+		if(main && opt1) {
+			map = true;
+			opt1 = false;
+			opt2 = false;
+			opt3 = false;
+			opt4 = false;
 		}
-		g.drawString(narr, 410, 50);
+		
+		if(p.getHealth()<=0) {
+			dead = true;
+			narr = "You died...";
+			op1 = "respawn";
+			op2 = "...";
+			op3 = "...";
+			op4 = "...";
+		}
+		
+		//Map Navigation
+		if(map) {
+			narr = "You open your map. Where do you want to go?";
+			op1 = "Store";
+			op2 = "Hospital";
+			op3 = "Dungeons";
+			op4 = "...";
+		}
+		
+		if(map && opt2) {
+			hosp = true;
+			opt1 = false;
+			opt2 = false;
+			opt3 = false;
+			opt4 = false;
+		}
+		
+		if(map && opt1) {
+			storeM = true;
+			opt1 = false;
+			opt2 = false;
+			opt3 = false;
+			opt4 = false;
+		}
+		
+		if(map && opt3) {
+			dung = true;
+			opt1 = false;
+			opt2 = false;
+			opt3 = false;
+			opt4 = false;
+		}
 		
 		
+		//Hospital
+		if(hosp) {
+			narr = "You walk into the hospital. What now?";
+			op1 = "Get healed";
+			op2 = "Donate blood "+"(-"+p.getMaxHealth()/4+" health)";
+			op3 = "Leave";
+			op4 = "...";
+		}
 		
+		if(hosp && opt1) {
+			narr = "You got all of your wounds healed.";
+			p.setHealth(p.getMaxHealth());
+			opt1 = false;
+			opt2 = false;
+			opt3 = false;
+			opt4 = false;
+		}
 		
+		if(hosp && opt2) {
+			narr = "You donated some blood and received compensation";
+			p.setHealth(p.getHealth()-p.getMaxHealth()/4);
+			p.setGold(p.getGold()+3);
+			opt1 = false;
+			opt2 = false;
+			opt3 = false;
+			opt4 = false;
+		}
+		
+		if(hosp && opt3) {
+			narr = "You head back out to town. Where do you go?";
+			p.setHealth(p.getMaxHealth());
+			opt1 = false;
+			opt2 = false;
+			opt3 = false;
+			opt4 = false;
+		}
 		
 	}
 	
@@ -69,19 +160,6 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		
 		Driver d = new Driver();
 		
-	}
-	
-	public void newNarration(String newNarr, Graphics g) {
-		narr = newNarr;
-		for(int i = 1; i < narr.length(); i++) {
-			g.drawString(narr.substring(0, i), 420, 50);
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				Thread.currentThread().interrupt();
-			}
-		}
 	}
 	
 	
@@ -98,6 +176,9 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		frame.addMouseListener(this);
 		frame.addMouseMotionListener(this);
 		frame.setVisible(true);
+		frame.repaint();
+		frame.update(getGraphics());
+		update(getGraphics());
 	}
 	Timer t = new Timer(1, this);
 	
@@ -150,7 +231,7 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+		repaint();
 	}
 
 
@@ -158,19 +239,20 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		if(arg0.getKeyCode()==49) {
-			narr = "1 pressed";
 			System.out.println("1 pressed");
-			op1 = "1";
-			a1 = true;
+			opt1 = true;
 		}
 		if(arg0.getKeyCode()==50) {
 			System.out.println("2 pressed");
+			opt2 = true;
 		}
 		if(arg0.getKeyCode()==51) {
 			System.out.println("3 pressed");
+			opt3 = true;
 		}
 		if(arg0.getKeyCode()==52) {
 			System.out.println("4 pressed");
+			opt4 = true;
 		}
 		
 	}
