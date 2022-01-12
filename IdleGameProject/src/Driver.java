@@ -22,6 +22,7 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 	String narr = "You find yourself in the town plaza...";
 	Player p = new Player();
 	Boolean main = true;
+	Boolean start = true;
 	Boolean storeM = false;
 	Boolean storeB = false;
 	Boolean storeS = false;
@@ -66,6 +67,8 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		//Navigation logic
 		if(main && opt1) {
 			map = true;
+			start = false;
+			main = false;
 			opt1 = false;
 			opt2 = false;
 			opt3 = false;
@@ -74,6 +77,14 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		
 		if(p.getHealth()<=0) {
 			dead = true;
+			map = false;
+			hosp = false;
+			dung = false;
+			storeM = false;
+			opt1 = false;
+			opt2 = false;
+			opt3 = false;
+			opt4 = false;
 			narr = "You died...";
 			op1 = "respawn";
 			op2 = "...";
@@ -92,10 +103,12 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		
 		if(map && opt2) {
 			hosp = true;
+			main = true;
 			opt1 = false;
 			opt2 = false;
 			opt3 = false;
 			opt4 = false;
+			map = false;
 		}
 		
 		if(map && opt1) {
@@ -116,7 +129,7 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		
 		
 		//Hospital
-		if(hosp) {
+		if(hosp && main) {
 			narr = "You walk into the hospital. What now?";
 			op1 = "Get healed";
 			op2 = "Donate blood "+"(-"+p.getMaxHealth()/4+" health)";
@@ -125,12 +138,16 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		}
 		
 		if(hosp && opt1) {
-			narr = "You got all of your wounds healed.";
 			p.setHealth(p.getMaxHealth());
 			opt1 = false;
 			opt2 = false;
 			opt3 = false;
 			opt4 = false;
+			if(p.getHealth()==p.getMaxHealth()) {
+				narr = "You got your wounds healed.";
+			}else {
+				narr = "You are already at perfect health.";
+			}
 		}
 		
 		if(hosp && opt2) {
@@ -145,12 +162,20 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		
 		if(hosp && opt3) {
 			narr = "You head back out to town. Where do you go?";
-			p.setHealth(p.getMaxHealth());
 			opt1 = false;
 			opt2 = false;
 			opt3 = false;
 			opt4 = false;
+			hosp = false;
+			map = true;
 		}
+		
+		//Store
+		if(storeM) {
+			
+		}
+		
+		
 		
 	}
 	
