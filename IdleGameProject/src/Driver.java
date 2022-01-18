@@ -59,7 +59,6 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		g.drawString("Attack: "+p.getAttack(), 660, 325);
 		g.drawString("Gold: "+p.getGold(), 520, 345);
 		g.drawString("Loot: "+p.getLoot(), 620, 345);
-		g.drawString("Level "+p.getLevel()+": "+p.getXp()+"/"+p.getXpN(), 550, 560);
 		
 		//Narration
 		g.drawString(narr, 20, 450);
@@ -103,7 +102,7 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		
 		if(map && opt2) {
 			hosp = true;
-			main = true;
+			start = false;
 			opt1 = false;
 			opt2 = false;
 			opt3 = false;
@@ -117,6 +116,8 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 			opt2 = false;
 			opt3 = false;
 			opt4 = false;
+			map = false;
+			start = false;
 		}
 		
 		if(map && opt3) {
@@ -129,7 +130,7 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		
 		
 		//Hospital
-		if(hosp && main) {
+		if(hosp) {
 			narr = "You walk into the hospital. What now?";
 			op1 = "Get healed";
 			op2 = "Donate blood "+"(-"+p.getMaxHealth()/4+" health)";
@@ -168,13 +169,65 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 			opt4 = false;
 			hosp = false;
 			map = true;
+			main = false;
+			start = false;
 		}
 		
 		//Store
 		if(storeM) {
+			narr = "You walk into the old store. The shopkeeper greets you.";
+			op1 = "Buy";
+			op2 = "Sell";
+			op3 = "leave";
+			op4 = "...";
+			hosp = false;
+			map = false;
+		}
+		
+		if(storeM && opt1) {
+			narr = "What do you want to buy?";
+			op1 = "Health + " + 10*(p.getMaxHealth()-10);
+			op2 = "Attack + " + 10*(p.getAttack()-1);
+			op3 = "Defense + " + 10*(p.getDefense());
+			op4 = "Go back";
+			storeB = true;
+			storeM = false;
+			opt1 = false;
+			opt2 = false;
+			opt3 = false;
+			opt4 = false;
+		}
+		
+		if(storeM && opt2) {
+			narr = "What do you want to sell?";
+			op1 = "Sell loot " + "("+(p.getLoot()*3)+"G)";
+			op2 = "Go back";
+			op3 = "...";
+			op4 = "...";
+			storeS = true;
+			storeM = false;
+			opt1 = false;
+			opt2 = false;
+			opt3 = false;
+			opt4 = false;
 			
 		}
 		
+		if(storeB && opt4) {
+			storeM = true;
+			opt1 = false;
+			opt2 = false;
+			opt3 = false;
+			opt4 = false;
+		}
+		
+		if(storeS && opt2) {
+			storeM = true;
+			opt1 = false;
+			opt2 = false;
+			opt3 = false;
+			opt4 = false;
+		}
 		
 		
 	}
@@ -266,18 +319,30 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		if(arg0.getKeyCode()==49) {
 			System.out.println("1 pressed");
 			opt1 = true;
+			opt2 = false;
+			opt3 = false;
+			opt4 = false;
 		}
 		if(arg0.getKeyCode()==50) {
 			System.out.println("2 pressed");
 			opt2 = true;
+			opt1 = false;
+			opt3 = false;
+			opt4 = false;
 		}
 		if(arg0.getKeyCode()==51) {
 			System.out.println("3 pressed");
 			opt3 = true;
+			opt1 = false;
+			opt2 = false;
+			opt4 = false;
 		}
 		if(arg0.getKeyCode()==52) {
 			System.out.println("4 pressed");
 			opt4 = true;
+			opt1 = false;
+			opt2 = false;
+			opt3 = false;
 		}
 		
 	}

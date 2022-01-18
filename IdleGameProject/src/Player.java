@@ -6,7 +6,6 @@ public class Player {
 	private int attack;
 	private int gold;
 	private int loot;
-	private int xp, level, xpN;
 	
 	
 	
@@ -18,19 +17,8 @@ public class Player {
 		attack = 1;
 		gold = 10;
 		loot = 0;
-		xp = 0;
-		xpN = 10;
-		level = 1;
 	}
 	
-	public int getXpN() {
-		return xpN;
-	}
-
-	public void setXpN(int xpN) {
-		this.xpN = xpN;
-	}
-
 	public int getMaxHealth() {
 		return maxHealth;
 	}
@@ -47,31 +35,11 @@ public class Player {
 		this.loot = loot;
 	}
 
-	public int getXp() {
-		return xp;
-	}
-
-	public void setXp(int xp) {
-		this.xp = xp;
-	}
-
-	public int getLevel() {
-		return level;
-	}
-
-	public void setLevel(int level) {
-		this.level = level;
-	}
-
 	public Player(int attack, int defense, int health) {
 		this.attack = attack;
 		this.defense = defense;
 		this.health = health;
 	}
-	
-	
-	
-	
 	
 	public void setHealth(int health) {
 		this.health = health;
