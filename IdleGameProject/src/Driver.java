@@ -34,7 +34,7 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 	Boolean opt2 = false;
 	Boolean opt3 = false;
 	Boolean opt4 = false;
-	
+	int aP, hP, dP;
 	
 	
 	
@@ -63,10 +63,16 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		//Narration
 		g.drawString(narr, 20, 450);
 		
+		//Store prices
+		aP = 10*(p.getAttack()-1);
+		hP = 10*(p.getMaxHealth()-10);
+		dP = 10*(p.getDefense());
+		
 		//Navigation logic
 		if(main && opt1) {
 			map = true;
 			start = false;
+			narr = "You open your map. Where do you want to go?";
 			main = false;
 			opt1 = false;
 			opt2 = false;
@@ -93,10 +99,10 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		
 		//Map Navigation
 		if(map) {
-			narr = "You open your map. Where do you want to go?";
+			
 			op1 = "Store";
 			op2 = "Hospital";
-			op3 = "Dungeons";
+			op3 = "Dungeons [CLOSED]";
 			op4 = "...";
 		}
 		
@@ -186,9 +192,9 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		
 		if(storeM && opt1) {
 			narr = "What do you want to buy?";
-			op1 = "Health + " + 10*(p.getMaxHealth()-10);
-			op2 = "Attack + " + 10*(p.getAttack()-1);
-			op3 = "Defense + " + 10*(p.getDefense());
+			op1 = "Health + " + hP;
+			op2 = "Attack + " + aP;
+			op3 = "Defense + " + dP;
 			op4 = "Go back";
 			storeB = true;
 			storeM = false;
@@ -213,8 +219,19 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 			
 		}
 		
+		if(storeM && opt3) {
+			map = true;
+			storeM = false;
+			narr = "You head back out to the town.";
+			opt1 = false;
+			opt2 = false;
+			opt3 = false;
+			opt4 = false;
+		}
+		
 		if(storeB && opt4) {
 			storeM = true;
+			storeB = false;
 			opt1 = false;
 			opt2 = false;
 			opt3 = false;
@@ -223,11 +240,31 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		
 		if(storeS && opt2) {
 			storeM = true;
+			storeS = false;
 			opt1 = false;
 			opt2 = false;
 			opt3 = false;
 			opt4 = false;
 		}
+		
+		//Purchasing upgrades
+		if(storeB && opt1) {
+			if(p.getGold() >= hP) {
+				p.setGold(p.getGold()-hP);
+				p.setMaxHealth(p.getMaxHealth()+1);
+			}else {
+				narr = "insufficient funds.";
+			}
+			opt1 = false;
+			opt2 = false;
+			opt3 = false;
+			opt4 = false;
+		}
+		
+		
+		
+		
+		
 		
 		
 	}
