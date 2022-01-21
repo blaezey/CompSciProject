@@ -192,9 +192,9 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		
 		if(storeM && opt1) {
 			narr = "What do you want to buy?";
-			op1 = "Health + " + hP;
-			op2 = "Attack + " + aP;
-			op3 = "Defense + " + dP;
+			op1 = "Health+   " + hP + "G";
+			op2 = "Attack+   " + aP + "G";
+			op3 = "Defense+   " + dP + "G";
 			op4 = "Go back";
 			storeB = true;
 			storeM = false;
@@ -252,6 +252,7 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 			if(p.getGold() >= hP) {
 				p.setGold(p.getGold()-hP);
 				p.setMaxHealth(p.getMaxHealth()+1);
+				hP = 10*(p.getMaxHealth()-10);
 			}else {
 				narr = "insufficient funds.";
 			}
@@ -261,10 +262,43 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 			opt4 = false;
 		}
 		
+		if(storeB && opt2) {
+			if(p.getGold() >= aP) {
+				p.setGold(p.getGold()-aP);
+				p.setAttack(p.getAttack()+1);
+				aP = 10*(p.getAttack()-1);
+			}else {
+				narr = "insufficient funds.";
+			}
+			opt1 = false;
+			opt2 = false;
+			opt3 = false;
+			opt4 = false;
+		}
 		
+		if(storeB && opt3) {
+			if(p.getGold() >= dP) {
+				p.setGold(p.getGold()-dP);
+				p.setDefense(p.getDefense()+1);
+				dP = 10*(p.getDefense());
+			}else {
+				narr = "insufficient funds.";
+			}
+			opt1 = false;
+			opt2 = false;
+			opt3 = false;
+			opt4 = false;
+		}
 		
-		
-		
+		//Selling loot
+		if(storeS && opt1) {
+			p.setGold(p.getGold()+(p.getLoot()*3));
+			p.setLoot(0);
+			opt1 = false;
+			opt2 = false;
+			opt3 = false;
+			opt4 = false;
+		}
 		
 		
 	}
