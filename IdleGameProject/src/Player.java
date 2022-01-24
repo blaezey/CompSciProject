@@ -19,6 +19,14 @@ public class Player {
 		loot = 0;
 	}
 	
+	public int Attack(Enemy en) {
+		int damage;
+		damage = (this.attack*10)/3*defense;
+		return damage;
+	}
+	
+	
+	
 	public int getMaxHealth() {
 		return maxHealth;
 	}

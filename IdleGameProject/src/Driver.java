@@ -21,6 +21,9 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 	String op4 = "...";
 	String narr = "You find yourself in the town plaza...";
 	Player p = new Player();
+	Enemy slime = new Enemy(5, 1, 1, 1, 2, 2, "Slime");
+	Enemy goblin = new Enemy(15, 4, 2, 3, 5, 4, "Goblin");
+	Enemy golem = new Enemy(80, 10, 3, 40, 20, 10, "Golem");
 	Boolean main = true;
 	Boolean start = true;
 	Boolean storeM = false;
@@ -59,6 +62,11 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		g.drawString("Attack: "+p.getAttack(), 660, 325);
 		g.drawString("Gold: "+p.getGold(), 520, 345);
 		g.drawString("Loot: "+p.getLoot(), 620, 345);
+		g.drawString("Enemy: "+ goblin.getName(), 550, 30);
+		g.drawString("Health: "+ goblin.getHealth()+"/"+goblin.getMaxHealth(), 450, 60);
+		g.drawString("Attack: "+ goblin.getAttack(), 570, 60);
+		g.drawString("Defense: "+ goblin.getDefense(), 665, 60);
+		
 		
 		//Narration
 		g.drawString(narr, 20, 450);
@@ -102,7 +110,7 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 			
 			op1 = "Store";
 			op2 = "Hospital";
-			op3 = "Dungeons [CLOSED]";
+			op3 = "Dungeons";
 			op4 = "...";
 		}
 		
@@ -300,6 +308,26 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 			opt4 = false;
 		}
 		
+		if(dung) {
+			map = false;
+			hosp = false;
+			storeM = false;
+			narr = "You enter the main entrance of the dungeon.";
+			op1 = "floor 1";
+			op2 = "floor 2";
+			op3 = "floor 3";
+			op4 = "leave";
+		}
+		
+		if(dung && opt1) {
+			
+			opt1 = false;
+			opt2 = false;
+			opt3 = false;
+			opt4 = false;
+		}
+		
+		
 		
 	}
 	
@@ -416,6 +444,9 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 			opt3 = false;
 		}
 		
+//		if(arg0.getKeyCode()==53) {
+//			p.setLoot(p.getLoot()+1);
+//		}
 	}
 
 
