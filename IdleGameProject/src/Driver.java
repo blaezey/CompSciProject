@@ -21,9 +21,11 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 	String op4 = "...";
 	String narr = "You find yourself in the town plaza...";
 	Player p = new Player();
+	Enemy noEnemy = new Enemy(0, 0, 0, 0, 0, 0, "No Enemy");
 	Enemy slime = new Enemy(5, 1, 1, 1, 2, 2, "Slime");
 	Enemy goblin = new Enemy(15, 4, 2, 3, 5, 4, "Goblin");
 	Enemy golem = new Enemy(80, 10, 3, 40, 20, 10, "Golem");
+	Enemy currentE = noEnemy;
 	Boolean main = true;
 	Boolean start = true;
 	Boolean storeM = false;
@@ -37,6 +39,7 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 	Boolean opt2 = false;
 	Boolean opt3 = false;
 	Boolean opt4 = false;
+	Boolean combat = false;
 	int aP, hP, dP;
 	
 	
@@ -62,11 +65,11 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		g.drawString("Attack: "+p.getAttack(), 660, 325);
 		g.drawString("Gold: "+p.getGold(), 520, 345);
 		g.drawString("Loot: "+p.getLoot(), 620, 345);
-		g.drawString("Enemy: "+ goblin.getName(), 550, 30);
-		g.drawString("Health: "+ goblin.getHealth()+"/"+goblin.getMaxHealth(), 450, 60);
-		g.drawString("Attack: "+ goblin.getAttack(), 570, 60);
-		g.drawString("Defense: "+ goblin.getDefense(), 665, 60);
-		
+		g.drawString("Enemy: "+ currentE.getName(), 540, 30);
+		g.drawString("Health: "+ currentE.getHealth()+"/"+currentE.getMaxHealth(), 450, 60);
+		g.drawString("Attack: "+ currentE.getAttack(), 570, 60);
+		g.drawString("Defense: "+ currentE.getDefense(), 665, 60);
+				
 		
 		//Narration
 		g.drawString(narr, 20, 450);
@@ -99,15 +102,31 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 			opt3 = false;
 			opt4 = false;
 			narr = "You died...";
-			op1 = "respawn";
+			op1 = "...";
 			op2 = "...";
 			op3 = "...";
 			op4 = "...";
 		}
 		
+//		if(dead && opt1) {
+//			p.setHealth(1);
+//			dead = false;
+//			hosp = false;
+//			dung = false;
+//			narr = "You awaken in the town center.";
+//			map = true;
+//			opt1 = false;
+//			opt2 = false;
+//			opt3 = false;
+//			opt4 = false;
+//			op1 = "Store";
+//			op2 = "Hospital";
+//			op3 = "Dungeons";
+//			op4 = "...";
+//		}
+		
 		//Map Navigation
 		if(map) {
-			
 			op1 = "Store";
 			op2 = "Hospital";
 			op3 = "Dungeons";
@@ -116,6 +135,7 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		
 		if(map && opt2) {
 			hosp = true;
+			narr = "You walk into the hospital. What now?";
 			start = false;
 			opt1 = false;
 			opt2 = false;
@@ -136,6 +156,7 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		
 		if(map && opt3) {
 			dung = true;
+			narr = "You enter the main entrance of the dungeon.";
 			opt1 = false;
 			opt2 = false;
 			opt3 = false;
@@ -145,7 +166,6 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		
 		//Hospital
 		if(hosp) {
-			narr = "You walk into the hospital. What now?";
 			op1 = "Get healed";
 			op2 = "Donate blood "+"(-"+p.getMaxHealth()/4+" health)";
 			op3 = "Leave";
@@ -192,7 +212,7 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 			narr = "You walk into the old store. The shopkeeper greets you.";
 			op1 = "Buy";
 			op2 = "Sell";
-			op3 = "leave";
+			op3 = "Leave";
 			op4 = "...";
 			hosp = false;
 			map = false;
@@ -312,20 +332,94 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 			map = false;
 			hosp = false;
 			storeM = false;
-			narr = "You enter the main entrance of the dungeon.";
+			
 			op1 = "floor 1";
 			op2 = "floor 2";
 			op3 = "floor 3";
-			op4 = "leave";
+			op4 = "Leave";
 		}
 		
 		if(dung && opt1) {
-			
+			currentE.setCurrentEnemy(slime);
+			currentE.Spawn();
+			combat = true;
 			opt1 = false;
 			opt2 = false;
 			opt3 = false;
 			opt4 = false;
 		}
+		
+		if(dung && opt2) {
+			currentE.setCurrentEnemy(goblin);
+			currentE.Spawn();
+			combat = true;
+			opt1 = false;
+			opt2 = false;
+			opt3 = false;
+			opt4 = false;
+		}
+		
+		if(dung && opt3) {
+			currentE.setCurrentEnemy(golem);
+			currentE.Spawn();
+			combat = true;
+			opt1 = false;
+			opt2 = false;
+			opt3 = false;
+			opt4 = false;
+		}
+		
+		if(dung && opt4) {
+			map = true;
+			narr = "You leave the dungeons and appear in the town center.";
+			dung = false;
+			opt1 = false;
+			opt2 = false;
+			opt3 = false;
+			opt4 = false;
+		}
+		
+		
+		//Combat
+		if(combat && !dead) {
+			dung = false;
+			op1 = "Attack";
+			op2 = "Do nothing";
+			op3 = "Leave";
+			op4 = "...";
+			if(opt1) {
+				p.Attack(currentE);
+				narr = "You swing at the slime.";
+				opt1 = false;
+				if(currentE.getHealth()<=0) {
+					p.setLoot(p.getLoot()+currentE.getLootY());
+				}
+				currentE.Attack(p);
+			}
+			if(opt2) {
+				narr = "You stare at the "+currentE.getName()+". It stares back.";
+				opt2 = false;
+				currentE.Attack(p);
+			}
+			if(opt3) {
+				narr = "You flee from the battle.";
+				currentE.setCurrentEnemy(noEnemy);
+				opt1 = false;
+				opt2 = false;
+				opt3 = false;
+				opt4 = false;
+				dung = true;
+				map = false;
+			}
+			
+			
+			
+			
+			
+			
+			
+		}
+		
 		
 		
 		

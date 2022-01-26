@@ -21,7 +21,8 @@ public class Player {
 	
 	public int Attack(Enemy en) {
 		int damage;
-		damage = (this.attack*10)/3*defense;
+		damage = (this.attack*10)-(en.getDefense()/5);
+		if(damage < 0) damage = 0;
 		return damage;
 	}
 	

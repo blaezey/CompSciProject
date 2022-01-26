@@ -53,7 +53,8 @@ public class Enemy {
 
 	public int Attack(Player pl) {
 		int damage;
-		damage = (this.attack*10)/3*defense;
+		damage = (this.attack*10)-(pl.getDefense()/5);
+		if(damage < 0) damage = 0;
 		return damage;
 	}
 	
@@ -61,6 +62,15 @@ public class Enemy {
 		health = maxHealth;
 	}
 	
+	public void setCurrentEnemy(Enemy en) {
+		this.name = en.getName();
+		this.attack = en.getAttack();
+		this.defense = en.getDefense();
+		this.health = en.getHealth();
+		this.maxHealth = en.getMaxHealth();
+		this.tier = en.getTier();
+		this.lootY = en.getLootY();
+	}
 	
 	public int getHealth() {
 		return health;
