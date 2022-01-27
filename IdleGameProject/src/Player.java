@@ -21,7 +21,7 @@ public class Player {
 	
 	public int Attack(Enemy en) {
 		int damage;
-		damage = (this.attack*10)-(en.getDefense()/5);
+		damage = (this.attack*3)-(en.getDefense()/2);
 		if(damage < 0) damage = 0;
 		return damage;
 	}
@@ -82,5 +82,3 @@ public class Player {
 		return gold;
 	}
 }
-
-
