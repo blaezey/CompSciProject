@@ -380,6 +380,7 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		}
 		
 		
+		
 		//Combat
 		if(combat && !dead) {
 			dung = false;
@@ -388,21 +389,34 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 			op3 = "Leave";
 			op4 = "...";
 			if(opt1) {
-				p.Attack(currentE);
+				int currDamage = p.Attack(currentE);
+				currentE.setHealth(currentE.getHealth()-currDamage);
 				narr = "You swing at the slime.";
 				opt1 = false;
+				opt2 = false;
+				opt3 = false;
+				opt4 = false;
 				if(currentE.getHealth()<=0) {
 					p.setLoot(p.getLoot()+currentE.getLootY());
+					currentE.setHealth(0);
+				}else {
+					currDamage = currentE.Attack(p);
+					p.setHealth(p.getHealth()-currDamage);
 				}
-				currentE.Attack(p);
 			}
 			if(opt2) {
 				narr = "You stare at the "+currentE.getName()+". It stares back.";
 				opt2 = false;
-				currentE.Attack(p);
+				int currentDamage;
+				currentDamage = currentE.Attack(p);
+				p.setHealth(p.getHealth()-currentDamage);
+				if(p.getHealth()<=0) {
+					p.setHealth(0);
+				}
 			}
 			if(opt3) {
 				narr = "You flee from the battle.";
+				combat = false;
 				currentE.setCurrentEnemy(noEnemy);
 				opt1 = false;
 				opt2 = false;
@@ -412,17 +426,14 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 				map = false;
 			}
 			
-			
-			
-			
-			
-			
-			
 		}
 		
 		
 		
 		
+		
+		
+	
 	}
 	
 	
