@@ -7,6 +7,7 @@ public class Enemy {
 	private int lootY;
 	private int xpY;
 	private String name;
+	private boolean alive;
 	
 	public Enemy(int maxHealth, int attack, int tier, int defense, int lootY, int xpY, String name) {
 		this.health = maxHealth;
@@ -17,8 +18,17 @@ public class Enemy {
 		this.lootY = lootY;
 		this.xpY = xpY;
 		this.name = name;
+		alive = false;
 	}
 	
+	public boolean isAlive() {
+		return alive;
+	}
+
+	public void setAlive(boolean alive) {
+		this.alive = alive;
+	}
+
 	public int getMaxHealth() {
 		return maxHealth;
 	}
@@ -53,7 +63,7 @@ public class Enemy {
 
 	public int Attack(Player pl) {
 		int damage;
-		damage = (this.attack*10)-(pl.getDefense()/5);
+		damage = (this.attack*3)-(pl.getDefense()/2);
 		if(damage < 0) damage = 0;
 		return damage;
 	}
