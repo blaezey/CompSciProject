@@ -3,24 +3,100 @@ public class Enemy {
 	private int health, maxHealth;
 	private int defense;
 	private int attack;
-	private int tier;
-	private int lootY;
+	private int mNumber;
+	private int goldY;
 	private int xpY;
 	private String name;
 	private boolean alive;
 	
-	public Enemy(int maxHealth, int attack, int tier, int defense, int lootY, int xpY, String name) {
+	//xp drops
+	private int maxGold;
+	private int minGold;
+	
+	
+	
+	
+	
+	public Enemy(int maxHealth, int attack, int tier, int defense, int goldY, int xpY, String name, int minGold, int maxGold) {
 		this.health = maxHealth;
 		this.maxHealth = maxHealth;
 		this.defense = defense;
 		this.attack = attack;
-		this.tier = tier;
-		this.lootY = lootY;
+		this.mNumber = tier;
+		this.goldY = goldY;
 		this.xpY = xpY;
 		this.name = name;
+		
+		this.minGold = minGold;
+		this.maxGold = maxGold;
+		
 		alive = false;
 	}
 	
+	
+	
+	
+	public int Attack(Player pl) {
+		int damage;
+		damage = (this.attack*2)-(pl.getDefense()*1);
+		if(damage < 1) damage = 1;
+		return damage;
+	}
+	
+	public int GiveGold() {
+		int roll;
+		roll = (int)(Math.random()*(maxGold))+minGold;
+		return roll;
+	}
+	
+	
+	
+	
+	
+	public int getmNumber() {
+		return mNumber;
+	}
+
+	public void setmNumber(int mNumber) {
+		this.mNumber = mNumber;
+	}
+
+	public int getMaxGold() {
+		return maxGold;
+	}
+
+
+	public void setMaxGold(int maxGold) {
+		this.maxGold = maxGold;
+	}
+
+	public int getMinGold() {
+		return minGold;
+	}
+
+
+	public void setMinGold(int minGold) {
+		this.minGold = minGold;
+	}
+
+	public void Spawn() {
+		health = maxHealth;
+	}
+	
+	public void setCurrentEnemy(Enemy en) {
+		this.name = en.getName();
+		this.attack = en.getAttack();
+		this.defense = en.getDefense();
+		this.health = en.getHealth();
+		this.maxHealth = en.getMaxHealth();
+		this.mNumber = en.getMNumber();
+		this.goldY = en.getGoldY();
+		this.xpY = en.getXpY();
+		this.minGold = en.getMinGold();
+		this.maxGold = en.getMaxGold();
+	}
+	
+
 	public boolean isAlive() {
 		return alive;
 	}
@@ -37,12 +113,12 @@ public class Enemy {
 		this.maxHealth = maxHealth;
 	}
 
-	public int getTier() {
-		return tier;
+	public int getMNumber() {
+		return mNumber;
 	}
 
 	public void setTier(int tier) {
-		this.tier = tier;
+		this.mNumber = tier;
 	}
 
 	public int getXpY() {
@@ -61,26 +137,7 @@ public class Enemy {
 		this.name = name;
 	}
 
-	public int Attack(Player pl) {
-		int damage;
-		damage = (this.attack*3)-(pl.getDefense()/2);
-		if(damage < 0) damage = 0;
-		return damage;
-	}
 	
-	public void Spawn() {
-		health = maxHealth;
-	}
-	
-	public void setCurrentEnemy(Enemy en) {
-		this.name = en.getName();
-		this.attack = en.getAttack();
-		this.defense = en.getDefense();
-		this.health = en.getHealth();
-		this.maxHealth = en.getMaxHealth();
-		this.tier = en.getTier();
-		this.lootY = en.getLootY();
-	}
 	
 	public int getHealth() {
 		return health;
@@ -106,12 +163,12 @@ public class Enemy {
 		this.attack = attack;
 	}
 
-	public int getLootY() {
-		return lootY;
+	public int getGoldY() {
+		return goldY;
 	}
 
-	public void setLootY(int lootY) {
-		this.lootY = lootY;
+	public void setGoldY(int goldY) {
+		this.goldY = goldY;
 	}
 	
 	
